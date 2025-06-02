@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Detail_tindakan;
+use App\Models\DetailTindakan;
 
 
-class Detail_tindakanController extends Controller
+class DetailTindakanController extends Controller
 {
     // Menampilkan semua detail tindakan
     public function index()
     {
-        $details = Detail_tindakan::all();
-        return response()->json($details);
+        $Detail_Tindakan = DetailTindakan::all();
+        return response()->json($Detail_Tindakan);
     }
 
     // Menyimpan detail tindakan baru
@@ -25,22 +25,22 @@ class Detail_tindakanController extends Controller
             'keterangan_subtotal' => 'required|numeric|min:0',
         ]);
 
-        $detail = Detail_tindakan::create($validated);
+        $Detail_Tindakan = DetailTindakan::create($validated);
 
-        return response()->json($detail, 201);
+        return response()->json($Detail_Tindakan, 201);
     }
 
     // Menampilkan detail berdasarkan ID
     public function show($id)
     {
-        $detail = Detail_tindakan::findOrFail($id);
-        return response()->json($detail);
+        $Detail_Tindakan = DetailTindakan::findOrFail($id);
+        return response()->json($Detail_Tindakan);
     }
 
     // Memperbarui data detail
     public function update(Request $request, $id)
     {
-        $detail = Detail_tindakan::findOrFail($id);
+        $Detail_Tindakan = DetailTindakan::findOrFail($id);
 
         $validated = $request->validate([
             'kunjungan_id' => 'required|integer|exists:kunjungans,id',
@@ -49,16 +49,16 @@ class Detail_tindakanController extends Controller
             'keterangan_subtotal' => 'required|numeric|min:0',
         ]);
 
-        $detail->update($validated);
+        $Detail_Tindakan->update($validated);
 
-        return response()->json($detail);
+        return response()->json($Detail_Tindakan);
     }
 
     // Menghapus data detail
     public function destroy($id)
     {
-        $detail = Detail_tindakan::findOrFail($id);
-        $detail->delete();
+        $Detail_Tindakans = DetailTindakan::findOrFail($id);
+        $Detail_Tindakans->delete();
 
         return response()->json(['message' => 'Detail tindakan berhasil dihapus.']);
     }

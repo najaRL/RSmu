@@ -22,7 +22,7 @@
             <!-- Navbar (opsional) -->
             <div class="absolute top-4 right-4 flex gap-4 text-white">
                 <a href="#" class="hover:underline">Home</a>
-                <a href="#" class="hover:underline">Dokter</a>
+                <a href="{{ url('/dokter') }}" class="hover:underline">Dokter</a>
                 <a href="#" class="hover:underline">Layanan</a>
                 <a href="#" class="hover:underline">Kontak</a>
             </div>
