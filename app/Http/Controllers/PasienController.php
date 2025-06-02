@@ -7,71 +7,61 @@ use Illuminate\Http\Request;
 
 class PasienController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan semua data pasien
     public function index()
     {
-        $pasien = Pasien::all();
-        return response()->json($pasien);
+        $pasiens = Pasien::all();
+        return response()->json($pasiens);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan data pasien baru
     public function store(Request $request)
     {
-
-
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:100',
-            'nik' => 'required|string|max:20|unique:pasiens,nik',
+            'nik' => 'required|string|max:20|unique:pasiens',
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string',
             'no_hp' => 'required|string|max:15',
         ]);
-        $pasien = Pasien::create($request->all());
+
+        $pasien = Pasien::create($validated);
 
         return response()->json($pasien, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pasien $pasien)
+    // Menampilkan detail pasien berdasarkan ID
+    public function show($id)
     {
-      
+        $pasien = Pasien::findOrFail($id);
+        return response()->json($pasien);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pasien $pasien)
+    // Memperbarui data pasien
+    public function update(Request $request, $id)
     {
-        //
+        $pasien = Pasien::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama' => 'required|string|max:100',
+            'nik' => 'required|string|max:20|unique:pasiens,nik,' . $id,
+            'tanggal_lahir' => 'required|date',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string|max:15',
+        ]);
+
+        $pasien->update($validated);
+
+        return response()->json($pasien);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pasien $pasien)
+    // Menghapus data pasien
+    public function destroy($id)
     {
-        //
-    }
+        $pasien = Pasien::findOrFail($id);
+        $pasien->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pasien $pasien)
-    {
-        //
+        return response()->json(['message' => 'Pasien berhasil dihapus.']);
     }
 }
+

@@ -2,64 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tindakan;
 use Illuminate\Http\Request;
+use App\Models\Tindakan;
 
 class TindakanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan semua tindakan
     public function index()
     {
-        //
+        $tindakans = Tindakan::all();
+        return response()->json($tindakans);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan tindakan baru
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_tindakan' => 'required|string|max:100',
+            'biaya' => 'required|numeric|min:0',
+            'kode_icd' => 'required|string|max:20',
+        ]);
+
+        $tindakan = Tindakan::create($validated);
+
+        return response()->json($tindakan, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tindakan $tindakan)
+    // Menampilkan detail tindakan berdasarkan ID
+    public function show($id)
     {
-        //
+        $tindakan = Tindakan::findOrFail($id);
+        return response()->json($tindakan);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tindakan $tindakan)
+    // Memperbarui data tindakan
+    public function update(Request $request, $id)
     {
-        //
+        $tindakan = Tindakan::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama_tindakan' => 'required|string|max:100',
+            'biaya' => 'required|numeric|min:0',
+            'kode_icd' => 'required|string|max:20',
+        ]);
+
+        $tindakan->update($validated);
+
+        return response()->json($tindakan);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Tindakan $tindakan)
+    // Menghapus tindakan
+    public function destroy($id)
     {
-        //
-    }
+        $tindakan = Tindakan::findOrFail($id);
+        $tindakan->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tindakan $tindakan)
-    {
-        //
+        return response()->json(['message' => 'Tindakan berhasil dihapus.']);
     }
 }

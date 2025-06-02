@@ -2,64 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dokter;
 use Illuminate\Http\Request;
+use App\Models\Dokter;
 
 class DokterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Tampilkan semua dokter
     public function index()
     {
-        //
+        $dokters = Dokter::all();
+        return response()->json($dokters);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Simpan dokter baru
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama' => 'required|string|max:100',
+            'spesialis' => 'required|string|max:100',
+            'jadwal_praktek' => 'required|string|max:50',
+            'no_str' => 'required|string|max:50',
+        ]);
+
+        $dokter = Dokter::create($validated);
+
+        return response()->json($dokter, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Dokter $dokter)
+    // Tampilkan detail dokter berdasarkan ID
+    public function show($id)
     {
-        //
+        $dokter = Dokter::findOrFail($id);
+        return response()->json($dokter);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Dokter $dokter)
+    // Update data dokter
+    public function update(Request $request, $id)
     {
-        //
+        $dokter = Dokter::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama' => 'required|string|max:100',
+            'spesialis' => 'required|string|max:100',
+            'jadwal_praktek' => 'required|string|max:50',
+            'no_str' => 'required|string|max:50',
+        ]);
+
+        $dokter->update($validated);
+
+        return response()->json($dokter);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Dokter $dokter)
+    // Hapus dokter
+    public function destroy($id)
     {
-        //
-    }
+        $dokter = Dokter::findOrFail($id);
+        $dokter->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Dokter $dokter)
-    {
-        //
+        return response()->json(['message' => 'Data dokter berhasil dihapus.']);
     }
 }

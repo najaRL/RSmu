@@ -7,59 +7,58 @@ use Illuminate\Http\Request;
 
 class KunjunganController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan semua kunjungan
     public function index()
     {
-        //
+        $kunjungans = Kunjungan::all();
+        return response()->json($kunjungans);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan kunjungan baru
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'pasien_id' => 'required|integer|exists:pasiens,id',
+            'dokter_id' => 'required|integer|exists:dokters,id',
+            'tanggal' => 'required|date',
+            'keluhan' => 'required|string',
+        ]);
+
+        $kunjungan = Kunjungan::create($validated);
+
+        return response()->json($kunjungan, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kunjungan $kunjungan)
+    // Menampilkan detail kunjungan berdasarkan ID
+    public function show($id)
     {
-        //
+        $kunjungan = Kunjungan::findOrFail($id);
+        return response()->json($kunjungan);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Kunjungan $kunjungan)
+    // Memperbarui data kunjungan
+    public function update(Request $request, $id)
     {
-        //
+        $kunjungan = Kunjungan::findOrFail($id);
+
+        $validated = $request->validate([
+            'pasien_id' => 'required|integer|exists:pasiens,id',
+            'dokter_id' => 'required|integer|exists:dokters,id',
+            'tanggal' => 'required|date',
+            'keluhan' => 'required|string',
+        ]);
+
+        $kunjungan->update($validated);
+
+        return response()->json($kunjungan);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Kunjungan $kunjungan)
+    // Menghapus data kunjungan
+    public function destroy($id)
     {
-        //
-    }
+        $kunjungan = Kunjungan::findOrFail($id);
+        $kunjungan->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Kunjungan $kunjungan)
-    {
-        //
+        return response()->json(['message' => 'Kunjungan berhasil dihapus.']);
     }
 }
