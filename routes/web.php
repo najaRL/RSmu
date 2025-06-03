@@ -15,7 +15,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');//iki enggko di genti file sing arep mbok enggo ngawe front end
 });
 
 Route::get('/tambah', function () {
@@ -60,9 +60,15 @@ Route::get('/DetailTindakan', function () {//insyallah sudah benar
     return view('DetailTindakan', compact('DetailTindakan'));
 });
 
-Route::get('/', function () {
+//Route::get('/', function () {
+//    return view('dashboard');
+//}); di tanggung dulu
+
+Route::get('/dashboard', function () {
     return view('dashboard');
-});
+
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::get('/dokter', function () {
     return view('dokter');

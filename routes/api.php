@@ -25,3 +25,5 @@ Route::apiResource('tindakans', TindakanController::class);
 Route::apiResource('Detail_Tindakans', DetailTindakanController::class);
 
 
+
+
