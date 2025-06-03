@@ -9,6 +9,7 @@ use App\Models\Dokter;
 use App\Models\Kunjungan;
 use App\Models\Pasien;
 use App\Models\Tindakan;
+use App\Models\DetailTindakan;
 use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Route;
@@ -54,8 +55,8 @@ Route::post('/kunjungan', [KunjunganController::class, 'store']);
 
 Route::resource('Detail_Tindakan', DetailTindakanController::class);
 
-Route::get('/DetailTindakan', function () {//belum benar
-    $Detail_Tindakan = DetailTindakan::all(); // Ambil semua data dari tabel Detail_Tindakan
+Route::get('/DetailTindakan', function () {//insyallah sudah benar
+    $Detail_Tindakan = DetailTindakan::all(); // Ambil semua data dari tabel DetailTindakan
     return view('DetailTindakan', compact('DetailTindakan'));
 });
 
